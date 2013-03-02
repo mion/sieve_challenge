@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: latin-1 -*-
 from price import Price
 import unittest
@@ -9,7 +8,7 @@ parsing_tests = {
   "no cents":             ["R$500", Price(500)],
   "whitespace":           ["R $4 12,53", Price(412, 53)],
   "point":                ["R$ 9.000,50", Price(9000, 50)],
-  "point and whitespace":      ["R$ 1. 20 0,2 5", Price(1200, 25)],
+  "point and whitespace": ["R$ 1. 20 0,2 5", Price(1200, 25)],
   "even more whitespace": ["R$  7  02  1 , 0 9", Price(7021, 9)],
   "line break":           ["Terno e gravata por R$ 35\n0, 99", Price(350, 99)],
   "html tags":            ["Geladeira Brastemp <b>super oferta: <u>R$ 799,99</u></b><br>", Price(799,99)],
