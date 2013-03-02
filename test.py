@@ -1,28 +1,32 @@
-import price
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+from price import Price
 import unittest
 
+parsing_tests = { 
+  "no symbol":            ["1.00", None],
+  "standard price":       ["R$1,99", Price(1, 99)],
+  "no cents":             ["R$500", Price(500)],
+  "whitespace":           ["R $4 12,53", Price(412, 53)],
+  "point separator":      ["U$ 530.50", Price(530, 50)],
+  "more whitespace":      ["R$ 12 0,2 5", Price(120, 25)],
+  "even more whitespace": ["R$  7  02  1 , 0 9", Price(7021, 9)],
+  "line break":           ["Terno e gravata por R$ 35\n0, 99", Price(350, 99)],
+  "html tags":            ["Geladeira Brastemp <b>super oferta: <u>R$ 799,99</u></b><br>", Price(799,99)],
+  "numbers before price": ["Desconto 35%: Côtes du Rhone 2009 só R$15.90/garrafa", Price(15, 90)]}
+
 class TestPrice(unittest.TestCase):
+  pass
 
-	def setUp(self):
-		self.raw_to_parsed = { 
-				"1.00": Price(1),
-				"R$1,99": Price(1, 99),
-				"R$500": Price(500),
-				"R $412,53": Price(412, 53),
-				"U$ 530.50": Price(530, 50),
-				"R$ 12 0,2 5": Price(120, 25),
-				"R$ 7021 , 09": Price(7012, 9),
-				"Ih R$ 1 acho 2%q 3, bugo0u5": Price(123, 5),
-				"Apenas R $2 9, 0 0": Price(29),
-				"Tá caro? Promoção: só R$ 1 9 9 , 9 9 reais": Price(199, 99),
-				"Châteu La Croix de Queynac 2009 Rouge 5.90 €/bouteille": Price(5, 90),
-				"Apenas 4 reais!": Price(4),
-				"Uncroyable! Côtes de Blaye: 4. 8 0 € au lieu de 14,90€ !": [Price(4, 80), Price(14, 90)]}
-
-	def test_parsing(self):
-		for r in raw_to_parsed.keys():
-			p = parse_price(r)
-			self.assertEqual(p, raw_to_parsed[r])
+def test_generator(a, b):
+  def test(self):
+    self.assertEqual(a, b)
+  return test
 
 if __name__ == '__main__':
-	unittest.main()
+  for test_name in parsing_tests.keys():
+    test_method_name = "test_" + test_name.replace(" ", "_")
+    parsing_test =  test_generator(Price.parse(parsing_tests[test_name][0]), parsing_tests[test_name][1])
+    parsing_test.__doc__ = "Testing parsing of string '%s'" % parsing_tests[test_name][0]
+    setattr(TestPrice, test_method_name, parsing_test)
+  unittest.main()
