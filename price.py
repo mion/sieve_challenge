@@ -10,11 +10,10 @@ class Price:
     return self.amount == other.amount and self.cents == other.cents
 
   def __str__(self):
-    return str(self.amount) + "," + str(self.cents)
+    return "%d,%.2d" % (self.amount, self.cents)
     
   @staticmethod
-  def parse(s, money_sym='$'):
-    separators = [",", "."]
+  def parse(s, money_sym='$', sep=','):
     amount = ""
     cents = ""
     cents_flag = False
@@ -33,7 +32,7 @@ class Price:
         else:
           cents += s[i]
           cents_counter += 1
-      elif s[i] in separators:
+      elif s[i] == sep: 
           cents_flag = True
  
     return Price(int(amount), int(cents) if cents_flag else 0)
